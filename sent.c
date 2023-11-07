@@ -527,6 +527,7 @@ xdraw(void)
 
 	getfontsize(&slides[idx], &width, &height);
 	XClearWindow(xw.dpy, xw.win);
+    char slideNumber[16];
 
 	if (!im) {
 		drw_rect(d, 0, 0, xw.w, xw.h, 1, 1);
@@ -539,6 +540,15 @@ xdraw(void)
 			         0,
 			         slides[idx].lines[i],
 			         0);
+        snprintf(slideNb, sizeof(slideNb), "%d/%d", idx + 1, slidecount);
+        drw_text(d,
+                 xw.w - 120,
+                 xw.h - 120,
+                 width,
+                 12,
+                 0,
+                 slideNb,
+                 0);
 		drw_map(d, xw.win, 0, 0, xw.w, xw.h);
 	} else {
 		if (!(im->state & SCALED))
