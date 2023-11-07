@@ -527,7 +527,7 @@ xdraw(void)
 
 	getfontsize(&slides[idx], &width, &height);
 	XClearWindow(xw.dpy, xw.win);
-    char slideNumber[16];
+    char slideNb[16];
 
 	if (!im) {
 		drw_rect(d, 0, 0, xw.w, xw.h, 1, 1);
@@ -542,10 +542,10 @@ xdraw(void)
 			         0);
         snprintf(slideNb, sizeof(slideNb), "%d/%d", idx + 1, slidecount);
         drw_text(d,
-                 xw.w - 120,
-                 xw.h - 120,
-                 width,
-                 12,
+                 xw.w * 0.9,
+                 xw.h * 0.9,
+                 xw.w * 0.1,
+                 xw.h * 0.1,
                  0,
                  slideNb,
                  0);
