@@ -528,6 +528,8 @@ xdraw(void)
 	getfontsize(&slides[idx], &width, &height);
 	XClearWindow(xw.dpy, xw.win);
     char slideNb[16];
+    printf("idx %d: xw w %d h %d uw %d uh %d width %d height %d\n", idx, xw.w, xw.h, xw.uw, xw.uh, width, height);
+
 
 	if (!im) {
 		drw_rect(d, 0, 0, xw.w, xw.h, 1, 1);
@@ -541,11 +543,21 @@ xdraw(void)
 			         slides[idx].lines[i],
 			         0);
         snprintf(slideNb, sizeof(slideNb), "%d/%d", idx + 1, slidecount);
-        drw_text(d,
-                 xw.w * 0.9,
-                 xw.h * 0.9,
-                 xw.w * 0.1,
-                 xw.h * 0.1,
+        unsigned int slideNbWidth, slideNbHeight;
+        drw_font_getexts(d->fonts, slideNb, strlen(slideNb), &slideNbWidth, &slideNbHeight);
+        printf("slideNbWidth %d slideNbHeight %d\n", slideNbWidth, slideNbHeight);
+
+        // Create a new Drw structure with a fixed font size
+        Drw *d_small = malloc(sizeof(Drw));
+        *d_small = *d; // copy the original Drw structure
+        d_small->fonts = drw_fontset_create(d_small, (const char*[]){ "fixed:size=10", NULL }, 1);
+
+        // Use the new Drw structure when drawing the slide number
+        drw_text(d_small,
+                 xw.w - slideNbWidth - 10,
+                 xw.h  - 200,
+                 slideNbWidth,
+                 slideNbHeight,
                  0,
                  slideNb,
                  0);
